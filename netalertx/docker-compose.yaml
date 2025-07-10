@@ -1,0 +1,14 @@
+services:
+  netalertx:
+    profiles: [netalertx]
+    container_name: netalertx
+    image: "jokobsk/netalertx:latest"      
+    network_mode: "host"        
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+      - ./db:/app/db
+      - ./logs:/app/front/log
+    environment:
+      - TZ=${TIMEZONE}
+      - PORT=${WEBUI_PORT_NETALERTX}

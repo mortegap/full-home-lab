@@ -1,0 +1,3 @@
+include:
+  - path: 'arrs-qbit/docker-compose.yaml'
+  - path: 'jellyfin/docker-compose.yaml'

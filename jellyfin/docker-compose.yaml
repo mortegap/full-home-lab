@@ -1,0 +1,19 @@
+services:
+  jellyfin:
+    profiles: [jellyfin]
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    network_mode: 'host'
+    restart: unless-stopped      
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      #      - JELLYFIN_PublishedServerUrl=http://192.168.1.130
+    volumes:
+      - ./jellyfin-config:/config
+      - ./jellyfin-cache:/cache
+      - ${GLOBAL_MEDIA_FOLDER}:/media
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
