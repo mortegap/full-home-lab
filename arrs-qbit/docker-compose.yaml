@@ -19,7 +19,7 @@ services:
     stop_grace_period: 30m
     tty: true
     volumes:
-      - ./qbit-config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/qbittorrent-config:/config
       - ${GLOBAL_MEDIA_FOLDER}:/downloads
 
   # https://github.com/linuxserver/docker-radarr
@@ -35,7 +35,7 @@ services:
       - PUID=${PUID}
       - TZ=${TIMEZONE}
     volumes:
-      - ./radarr-config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/radarr-config:/config
       - ${MOVIES_FOLDER}:/movies
       - ${DOWNLOAD_FOLDER}:/downloads
 
@@ -52,7 +52,7 @@ services:
       - PUID=${PUID}
       - TZ=${TIMEZONE}
     volumes:
-      - ./sonarr-config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/sonarr-config:/config
       - ${SERIES_FOLDER}:/tv
       - ${DOWNLOAD_COMPLETE_FOLDER}:/downloads
 
@@ -71,7 +71,7 @@ services:
       - PUID=${PUID}
       - TZ=${TIMEZONE}
     volumes:
-      - ./prowlarr-config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/prowlarr-config:/config
 
   # https://github.com/linuxserver/docker-bazarr
   bazarr:
@@ -83,7 +83,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ./bazarr-config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/bazarr-config:/config
       - ${MOVIES_FOLDER}:/movies
       - ${SERIES_FOLDER}:/tv #optional
     ports:

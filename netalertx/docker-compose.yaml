@@ -6,9 +6,9 @@ services:
     network_mode: "host"        
     restart: unless-stopped
     volumes:
-      - ./config:/app/config
-      - ./db:/app/db
-      - ./logs:/app/front/log
+      - ${GLOBAL_CONFIG_FOLDER}/netalertx/config:/app/config
+      - ${GLOBAL_CONFIG_FOLDER}/netalertx/db:/app/db
+      - ${GLOBAL_CONFIG_FOLDER}/netalertx/logs:/app/front/log
     environment:
       - TZ=${TIMEZONE}
       - PORT=${WEBUI_PORT_NETALERTX}

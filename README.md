@@ -1,5 +1,5 @@
-## WHOLE PERSONAL HOME LAB
-# 
+## WHOLE PERSONAL HOME LAB 
+# IMPORTANT: WIP!
 # Apps in repo:
 - AdGuard
 - Arrs
@@ -12,7 +12,8 @@
 # How To:
 
 ```
-# Edit .env and run profiles
+# Copy env-default to an .env file and run profiles
+cp env-default .env
 docker compose --profiles arrs up -d
 docker compose --profiles jellyfin up -d
 docker compose --profiles netalertx up -d

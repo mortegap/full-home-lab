@@ -11,8 +11,8 @@ services:
       - TZ=${TIMEZONE}
       #      - JELLYFIN_PublishedServerUrl=http://192.168.1.130
     volumes:
-      - ./jellyfin-config:/config
-      - ./jellyfin-cache:/cache
+      - ${GLOBAL_CONFIG_FOLDER}/jellyfin/config:/config
+      - ${GLOBAL_CONFIG_FOLDER}/jellyfin/cache:/cache
       - ${GLOBAL_MEDIA_FOLDER}:/media
     extra_hosts:
       - "host.docker.internal:host-gateway"

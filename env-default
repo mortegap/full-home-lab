@@ -10,6 +10,7 @@ TIMEZONE=Europe/Madrid
 #
 # Media Stack:
 #
+GLOBAL_CONFIG_FOLDER=/your-config-folder
 GLOBAL_MEDIA_FOLDER=/your-media-folder
 DOWNLOAD_COMPLETE_FOLDER=/your-downloads-folder
 MOVIES_FOLDER=/your-movies-folder
