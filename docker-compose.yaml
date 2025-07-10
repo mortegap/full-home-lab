@@ -2,3 +2,4 @@ include:
   - path: 'arrs-qbit/docker-compose.yaml'
   - path: 'jellyfin/docker-compose.yaml'
   - path: 'netalertx/docker-compose.yaml'
+  - path: 'filebrowser/docker-compose.yaml'

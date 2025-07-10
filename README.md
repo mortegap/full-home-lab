@@ -17,4 +17,5 @@ cp env-default .env
 docker compose --profiles arrs up -d
 docker compose --profiles jellyfin up -d
 docker compose --profiles netalertx up -d
+docker compose --profiles filebrowser up -d
 ```

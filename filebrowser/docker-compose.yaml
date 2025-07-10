@@ -1,0 +1,13 @@
+services:
+  filebrowser:
+    profiles: [filebrowser]    
+    image: hurlenko/filebrowser:latest
+    user: ${PUID}:${PGID}
+    ports:
+      - ${WEBUI_PORT_FILEBROWSER}:8080
+    volumes:
+      - ${GLOBAL_MEDIA_FOLDER}:/data
+      - ${GLOBAL_CONFIG_FOLDER}/filebrowser:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: unless-stopped
