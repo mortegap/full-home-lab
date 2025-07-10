@@ -1,6 +1,6 @@
-## WHOLE PERSONAL HOME LAB 
-# IMPORTANT: WIP!
-# Apps in repo:
+# WHOLE PERSONAL HOME LAB 
+## IMPORTANT: WIP!
+## Apps in repo:
 - AdGuard
 - Arrs
 - Jellyfin
@@ -9,7 +9,7 @@
 - Nginx Proxy Manager
 - wireguard
 
-# How To:
+## How To:
 
 ```
 # Copy env-default to an .env file and run profiles
