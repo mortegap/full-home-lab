@@ -85,7 +85,7 @@ services:
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/bazarr-config:/config
       - ${MOVIES_FOLDER}:/movies
-      - ${SERIES_FOLDER}:/tv #optional
+      - ${SERIES_FOLDER}:/tv
     ports:
       - ${WEBUI_PORT_BAZARR}:6767
     restart: unless-stopped
@@ -103,3 +103,22 @@ services:
     ports:
       - ${FLARESOLVERR_PORT}:8191
     restart: unless-stopped   
+
+  # https://github.com/fallenbagel/jellyseerr
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - TZ=${TIMEZONE}
+      - PORT=${WEBUI_PORT_JELLYSEERR}
+    ports:
+      - ${WEBUI_PORT_JELLYSEERR}:5055
+    volumes:
+      - ${GLOBAL_CONFIG_FOLDER}/jellyseerr:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped      

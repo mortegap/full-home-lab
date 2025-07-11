@@ -18,4 +18,5 @@ docker compose --profiles arrs up -d
 docker compose --profiles jellyfin up -d
 docker compose --profiles netalertx up -d
 docker compose --profiles filebrowser up -d
+docker compose --profiles nginx up -d
 ```
