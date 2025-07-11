@@ -3,3 +3,5 @@ include:
   - path: 'jellyfin/docker-compose.yaml'
   - path: 'netalertx/docker-compose.yaml'
   - path: 'filebrowser/docker-compose.yaml'
+  - path: 'adguard/docker-compose.yaml'
+  - path: 'nginx-proxy-manager/docker-compose.yaml'

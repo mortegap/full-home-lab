@@ -106,6 +106,7 @@ services:
 
   # https://github.com/fallenbagel/jellyseerr
   jellyseerr:
+    profiles: [arrs]
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     environment:
