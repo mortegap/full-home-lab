@@ -5,3 +5,4 @@ include:
   - path: 'filebrowser/docker-compose.yaml'
   - path: 'adguard/docker-compose.yaml'
   - path: 'nginx-proxy-manager/docker-compose.yaml'
+  - path: 'wireguard/docker-compose.yaml'

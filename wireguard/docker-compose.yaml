@@ -1,0 +1,46 @@
+# WireGuard VPN service
+wireguard:
+  image: linuxserver/wireguard:latest
+  profiles: [wireguard]
+  container_name: wireguard
+  cap_add:
+    - NET_ADMIN
+  volumes:
+    - ${GLOBAL_CONFIG_FOLDER}/wireguard/config:/config
+  ports:
+    # Port for WireGuard-UI
+    - ${WEBUI_PORT_WIREGUARD}:5000
+    # Port of the WireGuard VPN server
+    - ${WIREGUARD_PORT}:51820/udp
+  restart: unless-stopped
+
+# WireGuard-UI service
+wireguard-ui:
+  image: ngoduykhanh/wireguard-ui:latest
+  profiles: [wireguard]
+  container_name: wireguard-ui
+  depends_on:
+    - wireguard
+  cap_add:
+    - NET_ADMIN
+  # Use the network of the 'wireguard' service
+  # This enables to show active clients in the status page
+  network_mode: service:wireguard
+  environment:
+    - SENDGRID_API_KEY
+    - EMAIL_FROM_ADDRESS
+    - EMAIL_FROM_NAME
+    - SESSION_SECRET
+    - WGUI_USERNAME=${WIREGUARD_USERNAME}
+    - WGUI_PASSWORD=${WIREGUARD_PASSWORD}
+    - WG_CONF_TEMPLATE
+    - WGUI_MANAGE_START=true
+    - WGUI_MANAGE_RESTART=true
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: 50m
+  volumes:
+    - ${GLOBAL_CONFIG_FOLDER}/wireguard/db:/app/db
+    - ${GLOBAL_CONFIG_FOLDER}/wireguard/config:/etc/wireguard

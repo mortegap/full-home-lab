@@ -2,4 +2,5 @@
 *cache*/
 *db*/
 *logs*/
+*.log
 .env

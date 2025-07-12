@@ -20,4 +20,5 @@ docker compose --profiles netalertx up -d
 docker compose --profiles filebrowser up -d
 docker compose --profiles nginx up -d
 docker compose --profiles adguard up -d
+docker compose --profiles wireguard up -d
 ```
