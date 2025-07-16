@@ -7,7 +7,8 @@ torrentPath=$2
 torrentCategory=$3
 
 srcDir="/downloads/complete"
-destDir="/downloads/peliculas"
+destDirMovies="/downloads/peliculas"
+destDirSeries="/downloads/series"
 
 excludedCategories="radarr,tv-sonarr,lidarr,readarr,Uncategorized"
 
@@ -25,11 +26,18 @@ fi
 label="${torrentPath#$srcDir}"
 
 srcPath="${torrentPath}/${torrentName}"
-destPath="${destDir}/${torrentName}"
+destPathMovies="${destDirMovies}/${torrentName}"
+destPathSeries="${destDirSeries}/${torrentName}"
 
-cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
+if [[ ${torrentCategory} == *"movies"* ]]; then
+    cp -vlR "${srcPath}" "${destPathMovies}" >> "$logDir/qbit-hardlinker.log"
+elif [[ ${torrentCategory} == *"series"* ]]; then
+    cp -vlR "${srcPath}" "${destPathSeries}" >> "$logDir/qbit-hardlinker.log"
+else
+    echo "Torrent category invalid" >> "$logDir/qbit-hardlinker.log"
+fi
 if [ $? -eq 0 ]; then
-    echo "[...] Successfully hardlinked \"${torrentName}\" in \"${destPath}\"" >> "$logDir/qbit-hardlinker.log" 
+    echo "[...] Successfully hardlinked \"${torrentName}\" in \"${destPath}\"" >> "$logDir/qbit-hardlinker.log"
 else
     echo "Hardlink failed, check logs."
-fi 
+fi

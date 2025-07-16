@@ -12,3 +12,6 @@ Example :
 ```
 /config/qbit-hardlinker/qbit-hardlinker.sh "%N" "%D" "%L"
 ```
+
+Then, in each torrent you should add it to a category that inclues "movies" or "series" in it name.
+Don forget to override the variables in the top of the script.
