@@ -6,6 +6,7 @@ torrentName=$1
 torrentPath=$2
 torrentCategory=$3
 
+# Change this folders variables
 srcDir="/downloads/complete"
 destDirMovies="/downloads/peliculas"
 destDirSeries="/downloads/series"
