@@ -7,3 +7,4 @@ include:
   - path: 'nginx-proxy-manager/docker-compose.yaml'
   - path: 'wireguard/docker-compose.yaml'
   - path: 'n8n/docker-compose.yaml'
+  - path: 'open-webui/docker-compose.yaml'
