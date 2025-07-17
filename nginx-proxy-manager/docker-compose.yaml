@@ -8,13 +8,13 @@ services:
       - ${WEBUI_PORT_NGINX_443}:443 # Public HTTPS Port
       - ${WEBUI_PORT_NGINX_ADMIN}:81' # Admin Web Port
 
-    #environment:
+    environment:
       # Uncomment this if you want to change the location of
       # the SQLite DB file within the container
       # DB_SQLITE_FILE: "/data/database.sqlite"
 
       # Uncomment this if IPv6 is not enabled on your host
-      # DISABLE_IPV6: 'true'
+      DISABLE_IPV6: 'true'
 
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/nginx/data:/data
