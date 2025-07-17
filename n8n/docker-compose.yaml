@@ -6,6 +6,7 @@ volumes:
 
 services:
   postgres:
+    profiles: [n8n]
     image: postgres:16
     restart: unless-stopped 
     environment:
@@ -24,6 +25,7 @@ services:
       retries: 10
 
   n8n:
+    profiles: [n8n]
     image: docker.n8n.io/n8nio/n8n
     restart: always
     environment:

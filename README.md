@@ -326,4 +326,5 @@ docker compose --profiles nginx up -d
 docker compose --profiles adguard up -d
 docker compose --profiles wireguard up -d
 docker compose --profiles n8n up -d
+docker compose --profiles openwebui up -d
 ```

@@ -1,5 +1,6 @@
 services:
   open-webui:
+    profiles: [openwebui]
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
     volumes:
