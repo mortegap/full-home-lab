@@ -6,7 +6,7 @@ services:
     ports:
       - ${WEBUI_PORT_NGINX_80}:80 # Public HTTP Port
       - ${WEBUI_PORT_NGINX_443}:443 # Public HTTPS Port
-      - ${WEBUI_PORT_NGINX_ADMIN}:81' # Admin Web Port
+      - ${WEBUI_PORT_NGINX_ADMIN}:81 # Admin Web Port
 
     environment:
       # Uncomment this if you want to change the location of

@@ -318,13 +318,13 @@ Run the project with:
 ```sh
 # Copy env-default to an .env file and run profiles
 cp env-default .env
-docker compose --profiles arrs up -d
-docker compose --profiles jellyfin up -d
-docker compose --profiles netalertx up -d
-docker compose --profiles filebrowser up -d
-docker compose --profiles nginx up -d
-docker compose --profiles adguard up -d
-docker compose --profiles wireguard up -d
-docker compose --profiles n8n up -d
-docker compose --profiles openwebui up -d
+docker compose --profile arrs up -d
+docker compose --profile jellyfin up -d
+docker compose --profile netalertx up -d
+docker compose --profile filebrowser up -d
+docker compose --profile nginx up -d
+docker compose --profile adguard up -d
+docker compose --profile wireguard up -d
+docker compose --profile n8n up -d
+docker compose --profile openwebui up -d
 ```

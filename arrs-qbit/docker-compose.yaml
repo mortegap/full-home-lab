@@ -37,7 +37,7 @@ services:
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/radarr-config:/config
       - ${MOVIES_FOLDER}:/movies
-      - ${DOWNLOAD_FOLDER}:/downloads
+      - ${DOWNLOAD_COMPLETE_FOLDER}:/downloads
 
   # https://github.com/linuxserver/docker-sonarr
   sonarr:
