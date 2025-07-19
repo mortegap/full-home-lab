@@ -10,6 +10,10 @@ services:
     environment:
       - 'OLLAMA_BASE_URL=http://${OLLAMA_SERVER}:11434'
       - 'WEBUI_SECRET_KEY=${OPENWEBUI_SECRET_KEY}'
+      - 'ENABLE_WEB_SEARCH=True'
+      - 'WEB_SEARCH_ENGINE=google_pse'
+      - 'GOOGLE_PSE_API_KEY=${GOOGLE_PSE_API_KEY}'
+      - 'GOOGLE_PSE_ENGINE_ID=${GOOGLE_PSE_ENGINE_ID}'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
