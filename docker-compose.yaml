@@ -8,3 +8,4 @@ include:
   - path: 'wireguard/docker-compose.yaml'
   - path: 'n8n/docker-compose.yaml'
   - path: 'open-webui/docker-compose.yaml'
+  - path: 'monitoring/docker-compose.yaml'
