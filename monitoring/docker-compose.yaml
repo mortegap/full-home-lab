@@ -64,6 +64,8 @@ services:
       - prometheus-data:/prometheus
     depends_on:
       - alertmanager
+    environment:
+      TZ: ${TIMEZONE}
     ports:
       - ${WEBUI_PORT_PROMETHEUS}:9090
     # cpus: 0.5
@@ -92,6 +94,8 @@ services:
     # mem_limit: 512m
     networks:
       - monitoring
+    ports:
+      - ${WEBUI_PORT_CADVISOR}:8080
     labels:
       <<: *default-labels
     logging: *default-logging
@@ -128,7 +132,7 @@ services:
       - '--storage.path=/alertmanager'
       - '--web.external-url=http://localhost:9093'
     volumes:
-      - ./configs/alertmanager/alertmanager-fallback-config.yml:/etc/alertmanager/config.yml
+      - ./configs/alertmanager/alertmanager-email-config.yml:/etc/alertmanager/config.yml
     ports:
       - ${WEBUI_PORT_ALERTMANAGER}:9093
     # cpus: 0.5
