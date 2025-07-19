@@ -13,6 +13,7 @@ x-common-labels: &default-labels
 
 services:
   grafana:
+    profiles: [monitoring]
     image: grafana/grafana:main
     container_name: grafana
     restart: unless-stopped
@@ -44,6 +45,7 @@ services:
     logging: *default-logging
 
   prometheus:
+    profiles: [monitoring]
     image: prom/prometheus:main
     container_name: prometheus
     restart: unless-stopped
@@ -73,6 +75,7 @@ services:
     logging: *default-logging
 
   cadvisor:
+    profiles: [monitoring]
     image: gcr.io/cadvisor/cadvisor:v0.46.0
     container_name: cadvisor
     restart: unless-stopped
@@ -94,6 +97,7 @@ services:
     logging: *default-logging
 
   node-exporter:
+    profiles: [monitoring]
     image: prom/node-exporter:master
     container_name: node-exporter
     restart: unless-stopped
@@ -115,6 +119,7 @@ services:
     logging: *default-logging
 
   alertmanager:
+    profiles: [monitoring]
     image: prom/alertmanager:main
     container_name: alertmanager
     command:
@@ -135,6 +140,7 @@ services:
     logging: *default-logging
 
   redis:
+    profiles: [monitoring]
     image: redis:6
     container_name: redis
     ports:
@@ -148,6 +154,7 @@ services:
     logging: *default-logging
 
   loki:
+    profiles: [monitoring]
     image: grafana/loki:3.3.2
     container_name: loki
     user: root
@@ -166,6 +173,7 @@ services:
     logging: *default-logging
 
   promtail:
+    profiles: [monitoring]
     image:  grafana/promtail:3.3.2
     container_name: promtail
     volumes:
