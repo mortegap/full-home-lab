@@ -7,8 +7,8 @@ PGID=1000
 UMASK=0002
 TIMEZONE=Europe/Madrid
 DOMAIN_NAME=example.com
-# SSL_EMAIL=user@example.com
-# OLLAMA_SERVER=192.158.1.131
+SSL_EMAIL=user@example.com
+OLLAMA_SERVER=192.158.1.131
 
 #
 # Media Stack:
@@ -66,7 +66,6 @@ GOOGLE_PSE_ENGINE_ID=yourgoogleengineid
 # N8N
 #
 SUBDOMAIN=n8n
-#N8N_INITIAL_POSTGRES_SCRIPT=/your/script/path/init-data.sh
 POSTGRES_USER=root
 POSTGRES_PASSWORD=password
 POSTGRES_DB=n8n
