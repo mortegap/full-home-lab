@@ -218,7 +218,7 @@ groups:
     annotations:
       summary: "Container {{ $labels.name }} memory usage is high"
       description: "The container {{ $labels.name }} on instance {{ $labels.instance }} is using more than 80% of its allocated memory.\nVALUE = {{ $value }}\nLABELS = {{ $labels }}"
-    expr: (container_memory_usage_bytes{container_label_com_docker_compose_config_hash=~".+", container_label_stackname="docker-monitoring-stack-gpnc"} / container_spec_memory_limit_bytes) > 0.8
+    expr: (container_memory_usage_bytes{container_label_com_docker_compose_config_hash=~".+", container_label_stackname="docker-monitoring-stack-gpnc"} / container_spec_memory_limit_bytes) > 0.8 and container_spec_memory_limit_bytes > 0
     for: 5m
     labels:
       severity: warning
@@ -227,7 +227,7 @@ groups:
     annotations:
       summary: "Container {{ $labels.name }} memory almost full"
       description: "The container {{ $labels.name }} on instance {{ $labels.instance }} is using more than 90% of its allocated memory.\nVALUE = {{ $value }}\nLABELS = {{ $labels }}"
-    expr: (container_memory_usage_bytes{container_label_com_docker_compose_config_hash=~".+", container_label_stackname="docker-monitoring-stack-gpnc"} / container_spec_memory_limit_bytes) > 0.9
+    expr: (container_memory_usage_bytes{container_label_com_docker_compose_config_hash=~".+", container_label_stackname="docker-monitoring-stack-gpnc"} / container_spec_memory_limit_bytes) > 0.9 and container_spec_memory_limit_bytes > 0
     for: 2m
     labels:
       severity: critical
