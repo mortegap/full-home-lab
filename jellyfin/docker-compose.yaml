@@ -4,7 +4,9 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     network_mode: 'host'
-    restart: unless-stopped      
+    restart: unless-stopped
+    group_add:
+      - '992'
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -16,4 +18,5 @@ services:
       - ${GLOBAL_MEDIA_FOLDER}:/media
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128        
