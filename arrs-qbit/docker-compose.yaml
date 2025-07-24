@@ -2,7 +2,7 @@ services:
   # https://github.com/qbittorrent/qBittorrent/wiki/Installing-qBittorrent
   qbittorrent-nox:
     profiles: [arrs]
-    container_name: qbittorrent-nox:latest
+    container_name: qbittorrent-nox
     restart: unless-stopped
     environment:
       - PGID=${PGID}
