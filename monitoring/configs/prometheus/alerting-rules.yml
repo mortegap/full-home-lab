@@ -1,6 +1,23 @@
 groups:
 - name: node-exporter
   rules:
+  - alert: HostPhysicalComponentTooHot
+    expr: node_hwmon_temp_celsius > 85
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Server component too hot (instance {{ $labels.instance }})
+      description: Physical hardware component too hot\n  VALUE = {{ $value }}
+
+  - alert: HostNodeOvertemperatureAlarm
+    expr: node_hwmon_temp_crit_alarm_celsius == 1
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Server overtemperature alarm (instance {{ $labels.instance }})
+
   - alert: NodeOutOfMemory
     annotations:
       summary: Node out of memory (instance {{ $labels.instance }})
@@ -276,21 +293,3 @@ groups:
     for: 5m
     labels:
       severity: critical
-
-  - alert: HostPhysicalComponentTooHot
-    expr: node_hwmon_temp_celsius > 85
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: Server component too hot (instance {{ $labels.instance }})
-      description: Physical hardware component too hot\n  VALUE = {{ $value }}
-
-  - alert: HostNodeOvertemperatureAlarm
-    expr: node_hwmon_temp_crit_alarm_celsius == 1
-    for: 0m
-    labels:
-      severity: critical
-    annotations:
-      summary: Server overtemperature alarm (instance {{ $labels.instance }})
-      description: Physical node temperature alarm triggered\n  VALUE = {{ $value }}        
