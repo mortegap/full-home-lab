@@ -11,6 +11,7 @@ services:
     profiles: [n8n]
     image: postgres:16-alpine
     hostname: postgres
+    container_name: n8n-postgres
     networks: ['n8n']
     restart: unless-stopped
     environment:
@@ -59,8 +60,8 @@ services:
   qdrant:
     profiles: [n8n]
     image: qdrant/qdrant
+    container_name: n8n-qdrant   
     hostname: qdrant
-    container_name: qdrant
     networks: ['n8n']
     restart: unless-stopped
     ports:
