@@ -4,6 +4,12 @@ Forked from https://github.com/gravelfreeman/qbit-hardlinker
 
 Used for Qbittorrent script execution after a torrent has been totally downloaded
 
+Make a hardlink between the .sh file and a path where qbittorrent-nox container has access to:
+Ex-
+```
+ln ./ qbit-hardlinker.sh ${GLOBAL_CONFIG_FOLDER}/qbittorrent-config  
+```
+
 qBittorent > Tools > Options > Downloads Tab and scroll down to *Run external program* section and check the box *Run external program on torrent finished*
 
 Add the script path in the text field followed by `"%N" "%D" "%L"` variables.
