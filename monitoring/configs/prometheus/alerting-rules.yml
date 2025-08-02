@@ -2,7 +2,7 @@ groups:
 - name: node-exporter
   rules:
   - alert: HostPhysicalComponentTooHot
-    expr: node_hwmon_temp_celsius > 85
+    expr: node_hwmon_temp_celsius > 80
     for: 5m
     labels:
       severity: critical

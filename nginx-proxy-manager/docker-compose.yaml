@@ -20,3 +20,4 @@ services:
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/nginx/data:/data
       - ${GLOBAL_CONFIG_FOLDER}/nginx/letsencrypt:/etc/letsencrypt
+      - ${STATIC_WEB_FOLDER}:/web

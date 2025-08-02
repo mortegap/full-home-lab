@@ -18,6 +18,7 @@ GLOBAL_MEDIA_FOLDER=/your-media-folder
 DOWNLOAD_COMPLETE_FOLDER=/your-downloads-folder
 MOVIES_FOLDER=/your-movies-folder
 SERIES_FOLDER=/your-series-folder
+STATIC_WEB_FOLDER=/your-web-folder
 
 #
 # Web Ports:
