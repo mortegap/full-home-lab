@@ -60,6 +60,7 @@ REDIS_PORT=6379
 #
 WIREGUARD_USERNAME=admin
 WIREGUARD_PASSWORD=password
+SERVER_PUBLIC_IP=your-public-ip
 OPENWEBUI_SECRET_KEY=yoursecretkey
 GOOGLE_PSE_API_KEY=yourgoogleapikey
 GOOGLE_PSE_ENGINE_ID=yourgoogleengineid

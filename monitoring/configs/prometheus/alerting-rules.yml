@@ -293,3 +293,14 @@ groups:
     for: 5m
     labels:
       severity: critical
+
+- name: wireguard
+  rules:
+    - alert: WireguardClientConnections
+      annotations:
+        summary: "Unknown wireguard client connected"
+        description: "Client {{ $labels.instance }} connected."
+      expr: wireguard_latest_handshake_seconds{name != 'Samsung Galaxy S21'}  < 300
+      for: 1m
+      labels:
+        severity: critical 

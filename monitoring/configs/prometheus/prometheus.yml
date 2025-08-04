@@ -37,3 +37,10 @@ scrape_configs:
       - targets: [ 'cadvisor:8080' ]
         labels:
           container: 'cadvisor'
+
+  - job_name: 'wg-easy'
+    scrape_interval: 30s
+    metrics_path: /metrics/prometheus
+    static_configs:
+      - targets:
+        - '192.168.1.138:51821'
