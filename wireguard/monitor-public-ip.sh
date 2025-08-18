@@ -10,6 +10,27 @@ CONTAINER_NAME="wg-easy"  # Cambia este nombre por el de tu contenedor
 LOG_FILE="/var/log/ip_monitor.log"
 BACKUP_DIR="/var/backups/full-home-lab-env_backups"
 
+# Función para truncar el log si supera 5MB
+truncate_log_if_needed() {
+    if [ -f "$LOG_FILE" ]; then
+        # Obtener el tamaño del archivo en bytes
+        local file_size=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null)
+        local max_size=$((5 * 1024 * 1024))  # 5MB en bytes
+        
+        if [ "$file_size" -gt "$max_size" ]; then
+            # Crear backup del log antes de truncar
+            local backup_log="$LOG_FILE.old"
+            cp "$LOG_FILE" "$backup_log" 2>/dev/null
+            
+            # Mantener las últimas 500 líneas del log
+            tail -n 500 "$LOG_FILE" > "$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
+            
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] === LOG TRUNCADO - Archivo superó 5MB, mantenidas últimas 500 líneas ===" >> "$LOG_FILE"
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] Backup del log completo guardado en: $backup_log" >> "$LOG_FILE"
+        fi
+    fi
+}
+
 # Función para logging
 log_message() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
@@ -124,6 +145,9 @@ restart_wireguard() {
 
 # Función principal
 main() {
+    # Verificar y truncar el log si es necesario antes de empezar
+    truncate_log_if_needed
+    
     log_message "=== Iniciando verificación de IP pública ==="
     
     # Verificar que el archivo .env existe
