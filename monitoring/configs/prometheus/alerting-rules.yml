@@ -2,7 +2,7 @@ groups:
 - name: node-exporter
   rules:
   - alert: HostPhysicalComponentTooHot
-    expr: node_hwmon_temp_celsius > 80
+    expr: node_hwmon_temp_celsius > 75
     for: 5m
     labels:
       severity: critical
@@ -300,7 +300,7 @@ groups:
       annotations:
         summary: "Unknown wireguard client connected"
         description: "Client {{ $labels.instance }} connected."
-      expr: wireguard_latest_handshake_seconds{name != 'Samsung Galaxy S21'}  < 300
+      expr: wireguard_latest_handshake_seconds{name != 'Samsung Galaxy S21',name != "CGI Laptop"}  < 300
       for: 1m
       labels:
         severity: critical 
