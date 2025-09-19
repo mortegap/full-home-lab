@@ -47,6 +47,7 @@ Bring a whole home lab ecosystem to live with one command entrypoint.
 - **Proxy:** Nginx Proxy Manager
 - **Web Interface for LLM:** OpenWebUI
 - **VPN:** Wireguard
+- **Finance tool:** Spliit
 
 ---
 
@@ -152,6 +153,7 @@ docker compose --profile wireguard up -d
 docker compose --profile n8n up -d
 docker compose --profile openwebui up -d
 docker compose --profile monitoring up -d
+docker compose --profile spliit up -d
 ```
 ---
 

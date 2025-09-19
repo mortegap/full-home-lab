@@ -9,3 +9,4 @@ include:
   - path: 'n8n/docker-compose.yaml'
   - path: 'open-webui/docker-compose.yaml'
   - path: 'monitoring/docker-compose.yaml'
+  - path: 'spliit/docker-compose.yaml'
