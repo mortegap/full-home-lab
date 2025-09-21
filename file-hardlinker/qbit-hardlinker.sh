@@ -10,6 +10,7 @@ torrentCategory=$3
 srcDir="/downloads/complete"
 destDirMovies="/downloads/peliculas"
 destDirSeries="/downloads/series"
+destDirGames="/downloads/games"
 
 excludedCategories="radarr,tv-sonarr,lidarr,readarr,Uncategorized"
 
@@ -29,11 +30,14 @@ label="${torrentPath#$srcDir}"
 srcPath="${torrentPath}/${torrentName}"
 destPathMovies="${destDirMovies}/${torrentName}"
 destPathSeries="${destDirSeries}/${torrentName}"
+destPathGames="${destDirGames}/${torrentName}"
 
 if [[ ${torrentCategory} == *"movies"* ]]; then
     cp -vlR "${srcPath}" "${destPathMovies}" >> "$logDir/qbit-hardlinker.log"
 elif [[ ${torrentCategory} == *"series"* ]]; then
     cp -vlR "${srcPath}" "${destPathSeries}" >> "$logDir/qbit-hardlinker.log"
+elif [[ ${torrentCategory} == *"games"* ]]; then
+    cp -vlR "${srcPath}" "${destPathGames}" >> "$logDir/qbit-hardlinker.log"    
 else
     echo "Torrent category invalid" >> "$logDir/qbit-hardlinker.log"
 fi
