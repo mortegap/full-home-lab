@@ -10,3 +10,4 @@ include:
   - path: 'open-webui/docker-compose.yaml'
   - path: 'monitoring/docker-compose.yaml'
   - path: 'spliit/docker-compose.yaml'
+  - path: 'portainer/docker-compose.yaml'

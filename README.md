@@ -48,6 +48,7 @@ Bring a whole home lab ecosystem to live with one command entrypoint.
 - **Web Interface for LLM:** OpenWebUI
 - **VPN:** Wireguard
 - **Finance tool:** Spliit
+- **Container management tool:** Portainer
 
 ---
 
@@ -154,6 +155,7 @@ docker compose --profile n8n up -d
 docker compose --profile openwebui up -d
 docker compose --profile monitoring up -d
 docker compose --profile spliit up -d
+docker compose --profile portainer up -d
 ```
 ---
 
