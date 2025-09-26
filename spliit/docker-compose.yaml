@@ -1,7 +1,7 @@
 services:
   spliit:
     profiles: [spliit]    
-    image: spliit2:latest
+    image: ghcr.io/spliit-app/spliit:latest
     container_name: spliit
     restart: unless-stopped
     ports:
