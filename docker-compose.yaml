@@ -11,3 +11,4 @@ include:
   - path: 'monitoring/docker-compose.yaml'
   - path: 'spliit/docker-compose.yaml'
   - path: 'portainer/docker-compose.yaml'
+  - path: 'obsidian-sync/docker-compose.yaml'

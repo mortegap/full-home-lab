@@ -2,14 +2,14 @@ services:
   couchdb:
     image: couchdb:latest
     profiles: [obsidian]
-    container_name: couchdb-for-ols
-    user: 1000:1000
+    container_name: couchdb-obsidian
+    user: root
     environment:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/obsidian/couchdb-data:/opt/couchdb/data
-      - ${GLOBAL_CONDIF_FOLDER}/obsidian/couchdb-etc:/opt/couchdb/etc/local.d
+      - ${GLOBAL_CONFIG_FOLDER}/obsidian/couchdb-etc:/opt/couchdb/etc/local.d
     ports:
       - ${COUCHDB_PORT}:5984
     restart: unless-stopped
