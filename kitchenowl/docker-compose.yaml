@@ -12,6 +12,7 @@ services:
       - kitchenowl-back
   kitchenowl-back:
     image: tombursch/kitchenowl-backend:latest
+    profiles: [kitchenowl]
     restart: always
     container_name: kitchenowl-back
     environment:
