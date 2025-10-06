@@ -17,7 +17,7 @@ services:
     ports:
       - "${WIREGUARD_PORT}:51820/udp"
       - "${WEBUI_PORT_WIREGUARD}:51821/tcp"
-    restart: unless-stopped
+    restart: always
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

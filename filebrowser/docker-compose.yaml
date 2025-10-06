@@ -10,4 +10,4 @@ services:
       - ${GLOBAL_CONFIG_FOLDER}/filebrowser:/config
     environment:
       - FB_BASEURL=/filebrowser
-    restart: unless-stopped
+    restart: always

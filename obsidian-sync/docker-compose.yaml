@@ -12,7 +12,7 @@ services:
       - ${GLOBAL_CONFIG_FOLDER}/obsidian/couchdb-etc:/opt/couchdb/etc/local.d
     ports:
       - ${COUCHDB_PORT}:5984
-    restart: unless-stopped
+    restart: always
 
 volumes:
   couchdb-data:

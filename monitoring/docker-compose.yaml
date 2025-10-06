@@ -16,7 +16,7 @@ services:
     profiles: [monitoring]
     image: grafana/grafana:main
     container_name: grafana
-    restart: unless-stopped
+    restart: always
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -49,7 +49,7 @@ services:
     profiles: [monitoring]
     image: prom/prometheus:main
     container_name: prometheus
-    restart: unless-stopped
+    restart: always
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--log.level=error'
@@ -81,7 +81,7 @@ services:
     profiles: [monitoring]
     image: gcr.io/cadvisor/cadvisor:v0.46.0
     container_name: cadvisor
-    restart: unless-stopped
+    restart: always
     privileged: true
     volumes:
       - /:/rootfs:ro
@@ -105,7 +105,7 @@ services:
     profiles: [monitoring]
     image: prom/node-exporter:master
     container_name: node-exporter
-    restart: unless-stopped
+    restart: always
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -127,7 +127,7 @@ services:
     profiles: [monitoring]
     image: prom/alertmanager:main
     container_name: alertmanager
-    restart: unless-stopped
+    restart: always
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -152,7 +152,7 @@ services:
     profiles: [monitoring]
     image: redis:6
     container_name: redis
-    restart: unless-stopped
+    restart: always
     ports:
       - ${REDIS_PORT}:6379
         #cpus: 0.5
@@ -167,7 +167,7 @@ services:
     profiles: [monitoring]
     image: grafana/loki:3.3.2
     container_name: loki
-    restart: unless-stopped
+    restart: always
     user: root
     ports:
       - ${WEBUI_PORT_LOKI}:3100
@@ -187,7 +187,7 @@ services:
     profiles: [monitoring]
     image:  grafana/promtail:3.3.2
     container_name: promtail
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./configs/promtail/promtail.yaml:/etc/promtail/docker-config.yaml
       - /var/lib/docker/containers:/var/lib/docker/containers:ro

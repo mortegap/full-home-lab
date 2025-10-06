@@ -3,7 +3,7 @@ services:
   qbittorrent-nox:
     profiles: [arrs]
     container_name: qbittorrent-nox
-    restart: unless-stopped
+    restart: always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -27,7 +27,7 @@ services:
     profiles: [arrs]
     image: linuxserver/radarr:latest
     container_name: radarr
-    restart: unless-stopped
+    restart: always
     ports:
       - ${WEBUI_PORT_RADARR}:7878
     environment:
@@ -44,7 +44,7 @@ services:
     profiles: [arrs]
     image: linuxserver/sonarr:latest
     container_name: sonarr
-    restart: unless-stopped
+    restart: always
     ports:
       - ${WEBUI_PORT_SONARR}:8989
     environment:
@@ -61,7 +61,7 @@ services:
     profiles: [arrs]
     image: linuxserver/prowlarr:latest
     container_name: prowlarr
-    restart: unless-stopped
+    restart: always
     ports:
       - ${WEBUI_PORT_PROWLARR}:9696
     cap_add:
@@ -88,7 +88,7 @@ services:
       - ${SERIES_FOLDER}:/tv
     ports:
       - ${WEBUI_PORT_BAZARR}:6767
-    restart: unless-stopped
+    restart: always
 
   # https://github.com/FlareSolverr/FlareSolverr
   flaresolverr:
@@ -102,7 +102,7 @@ services:
       - TZ=${TIMEZONE}
     ports:
       - ${FLARESOLVERR_PORT}:8191
-    restart: unless-stopped   
+    restart: always   
 
   # https://github.com/fallenbagel/jellyseerr
   jellyseerr:
@@ -122,4 +122,4 @@ services:
       timeout: 3s
       interval: 15s
       retries: 3
-    restart: unless-stopped      
+    restart: always      

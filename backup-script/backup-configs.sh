@@ -29,6 +29,26 @@ log "====== Iniciando backup ======"
 log "Origen: $SOURCE_DIR"
 log "Destino: $CURRENT_BACKUP"
 
+# Directorio de docker compose
+DOCKER_COMPOSE_DIR="/home/moperez/projects/full-home-lab"
+
+# Parar contenedores antes del backup
+log "Parando contenedores de Docker Compose..."
+if [ -d "$DOCKER_COMPOSE_DIR" ]; then
+    cd "$DOCKER_COMPOSE_DIR" || exit 1
+    if docker compose stop >> "$LOG_FILE" 2>&1; then
+        log "✓ Contenedores detenidos correctamente"
+    else
+        log "✗ ERROR al detener contenedores"
+        exit 1
+    fi
+    # Pequeña espera para asegurar que todos los contenedores se han detenido
+    sleep 3
+else
+    log "✗ ERROR: No existe el directorio de docker compose: $DOCKER_COMPOSE_DIR"
+    exit 1
+fi
+
 # Verificar que el directorio origen existe
 if [ ! -d "$SOURCE_DIR" ]; then
     log "ERROR: El directorio origen no existe: $SOURCE_DIR"
@@ -51,7 +71,12 @@ RSYNC_OPTS=(
     --stats                 # mostrar estadísticas
     --human-readable        # tamaños legibles
     --progress              # mostrar progreso
+    --bwlimit=10000         # limitar ancho de banda a 10MB/s
 )
+
+# Reducir prioridad de I/O para no afectar a los contenedores
+NICE_CMD="nice -n 19"
+IONICE_CMD="ionice -c2 -n7"
 
 # Si existe un backup previo, usar hard links para ahorro de espacio
 if [ -L "$LATEST_LINK" ] && [ -d "$LATEST_LINK" ]; then
@@ -59,9 +84,11 @@ if [ -L "$LATEST_LINK" ] && [ -d "$LATEST_LINK" ]; then
     RSYNC_OPTS+=(--link-dest="$LATEST_LINK")
 fi
 
-# Ejecutar rsync
-if rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
+# Ejecutar rsync con baja prioridad
+BACKUP_SUCCESS=false
+if $NICE_CMD $IONICE_CMD rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
     log "✓ Backup completado exitosamente"
+    BACKUP_SUCCESS=true
     
     # Actualizar el enlace simbólico al último backup
     rm -f "$LATEST_LINK"
@@ -69,6 +96,20 @@ if rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&
     log "✓ Enlace simbólico actualizado: $LATEST_LINK"
 else
     log "✗ ERROR: Falló el backup con rsync"
+fi
+
+# # Reiniciar contenedores (SIEMPRE, incluso si el backup falló)
+# log "Reiniciando contenedores de Docker Compose..."
+# cd "$DOCKER_COMPOSE_DIR" || exit 1
+# if docker compose start >> "$LOG_FILE" 2>&1; then
+#     log "✓ Contenedores reiniciados correctamente"
+# else
+#     log "✗ ERROR al reiniciar contenedores (revisar manualmente!)"
+# fi
+
+# Si el backup falló, salir aquí antes de comprimir
+if [ "$BACKUP_SUCCESS" = false ]; then
+    log "====== Backup FALLIDO ======"
     exit 1
 fi
 

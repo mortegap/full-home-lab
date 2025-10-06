@@ -3,7 +3,7 @@ services:
     profiles: [spliit]    
     image: ghcr.io/spliit-app/spliit:latest
     container_name: spliit
-    restart: unless-stopped
+    restart: always
     ports:
       - ${WEBUI_PORT_SPLIIT}:3000
     environment:
@@ -19,7 +19,7 @@ services:
     profiles: [spliit]
     image: postgres:latest
     container_name: postgres-spliit
-    restart: unless-stopped
+    restart: always
     expose:
       - ${SPLIIT_POSTGRES_PORT}:5432
     environment:

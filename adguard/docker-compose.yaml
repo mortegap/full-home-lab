@@ -2,7 +2,7 @@ services:
   adguardhome:
     profiles: [adguard]
     image: adguard/adguardhome:latest
-    restart: unless-stopped      
+    restart: always      
     container_name: adguardhome
     ports:
       - ${ADGUARD_DNS}:53/tcp # plain dns over tcp

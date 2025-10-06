@@ -3,7 +3,7 @@ services:
     image: 'jc21/nginx-proxy-manager:latest'
     profiles: [nginx]
     container_name: nginx-proxy-manager
-    restart: unless-stopped
+    restart: always
     ports:
       - ${WEBUI_PORT_NGINX_80}:80 # Public HTTP Port
       - ${WEBUI_PORT_NGINX_443}:443 # Public HTTPS Port

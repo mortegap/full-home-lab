@@ -4,7 +4,7 @@ services:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     network_mode: 'host'
-    restart: unless-stopped
+    restart: always
     group_add:
       - '992'
       - '44'
