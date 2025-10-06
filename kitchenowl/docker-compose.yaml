@@ -9,7 +9,7 @@ services:
     ports:
       - "${WEBUI_PORT_KITCHENOWL}:80"
     depends_on:
-      - back
+      - kitchenowl-back
   kitchenowl-back:
     image: tombursch/kitchenowl-backend:latest
     restart: unless-stopped
