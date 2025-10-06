@@ -1,6 +1,7 @@
 services:
   kitchenowl-front:
     image: tombursch/kitchenowl-web:latest
+    profiles: [kitchenowl]
     restart: unless-stopped
     container_name: kitchenowl-front
     environment:
