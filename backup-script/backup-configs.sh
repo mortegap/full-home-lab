@@ -36,7 +36,7 @@ DOCKER_COMPOSE_DIR="/home/moperez/projects/full-home-lab"
 log "Parando contenedores de Docker Compose..."
 if [ -d "$DOCKER_COMPOSE_DIR" ]; then
     cd "$DOCKER_COMPOSE_DIR" || exit 1
-    if docker compose stop >> "$LOG_FILE" 2>&1; then
+    if docker compose --profile '*' stop >> "$LOG_FILE" 2>&1; then
         log "✓ Contenedores detenidos correctamente"
     else
         log "✗ ERROR al detener contenedores"
