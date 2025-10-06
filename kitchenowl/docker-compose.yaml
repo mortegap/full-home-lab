@@ -1,0 +1,19 @@
+services:
+  kitchenowl-front:
+    image: tombursch/kitchenowl-web:latest
+    restart: unless-stopped
+    container_name: kitchenowl-front
+    environment:
+      - BACK_URL=kitchenowl-back:5000 # Change this if you rename the containers
+    ports:
+      - "${WEBUI_PORT_KITCHENOWL}:80"
+    depends_on:
+      - back
+  kitchenowl-back:
+    image: tombursch/kitchenowl-backend:latest
+    restart: unless-stopped
+    container_name: kitchenowl-back
+    environment:
+      - JWT_SECRET_KEY=${KITCHENOWL_JWT_SECRET_KEY}
+    volumes:
+      - ${GLOBAL_CONFIG_FOLDER}/kitchenowl/data:/data

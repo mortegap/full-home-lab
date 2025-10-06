@@ -12,3 +12,4 @@ include:
   - path: 'spliit/docker-compose.yaml'
   - path: 'portainer/docker-compose.yaml'
   - path: 'obsidian-sync/docker-compose.yaml'
+  - path: 'kitchenowl/docker-compose.yaml'
