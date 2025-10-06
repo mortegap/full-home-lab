@@ -16,5 +16,7 @@ services:
     container_name: kitchenowl-back
     environment:
       - JWT_SECRET_KEY=${KITCHENOWL_JWT_SECRET_KEY}
+      - LLM_MODEL=llama3.1:8b
+      - LLM_API_URL=http://${OLLAMA_SERVER}:11434
     volumes:
       - ${GLOBAL_CONFIG_FOLDER}/kitchenowl/data:/data

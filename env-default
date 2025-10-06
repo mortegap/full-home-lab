@@ -8,7 +8,7 @@ UMASK=0002
 TIMEZONE=Europe/Madrid
 DOMAIN_NAME=example.com
 SSL_EMAIL=user@example.com
-OLLAMA_SERVER=192.158.1.131
+OLLAMA_SERVER=192.158.1.138
 
 #
 # Media Stack:
