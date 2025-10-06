@@ -166,5 +166,17 @@ log "====== Resumen de backups ======"
 log "Backups actuales:"
 find "$BACKUP_BASE" -maxdepth 1 \( -type d -name "${BACKUP_NAME}_*" -o -name "${BACKUP_NAME}_*.tar.gz" \) -exec ls -lh {} \; | tee -a "$LOG_FILE"
 
+# Comprobar tamaño del log y truncar si es necesario
+LOG_SIZE=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null)
+LOG_SIZE_MB=$((LOG_SIZE / 1024 / 1024))
+
+if [ "$LOG_SIZE_MB" -gt 100 ]; then
+    log "⚠️  Log supera 100MB (${LOG_SIZE_MB}MB), truncando..."
+    # Guardar las últimas 1000 líneas
+    tail -n 10000 "$LOG_FILE" > "${LOG_FILE}.tmp"
+    mv "${LOG_FILE}.tmp" "$LOG_FILE"
+    log "✓ Log truncado correctamente (mantenidas últimas 1000 líneas)"
+fi
+
 log "====== Backup finalizado ======"
 echo ""
