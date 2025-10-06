@@ -1,13 +1,13 @@
-services:
-  adguardhome:
-    profiles: [adguard]
-    image: adguard/adguardhome:latest
-    restart: always      
-    container_name: adguardhome
-    ports:
-      - ${ADGUARD_DNS}:53/tcp # plain dns over tcp
-      - ${ADGUARD_DNS}:53/udp # plain dns over udp
-      - ${WEBUI_PORT_ADGUARD}:3000/tcp # initial setup web interface
-    volumes:
-      - ${GLOBAL_CONFIG_FOLDER}/adguard/config:/opt/adguardhome/conf # app configuration
-      - ${GLOBAL_CONFIG_FOLDER}/adguard/work:/opt/adguardhome/work # app working directory
+# services:
+#   adguardhome:
+#     profiles: [adguard]
+#     image: adguard/adguardhome:latest
+#     restart: always      
+#     container_name: adguardhome
+#     ports:
+#       - ${ADGUARD_DNS}:53/tcp # plain dns over tcp
+#       - ${ADGUARD_DNS}:53/udp # plain dns over udp
+#       - ${WEBUI_PORT_ADGUARD}:3000/tcp # initial setup web interface
+#     volumes:
+#       - ${GLOBAL_CONFIG_FOLDER}/adguard/config:/opt/adguardhome/conf # app configuration
+#       - ${GLOBAL_CONFIG_FOLDER}/adguard/work:/opt/adguardhome/work # app working directory
