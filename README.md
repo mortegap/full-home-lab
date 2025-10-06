@@ -40,7 +40,6 @@
 Bring a whole home lab ecosystem to live with one command entrypoint.
 - **DNS:** AdGuard
 - **Torrent:** Arrs stack and qBittorrent
-- **File sharing:** filebrowser
 - **Media Streaming:** Jellyfin
 - **Monitoring:** Grafana/Prometheus/Alertmanager
 - **Workflow/AgenticAI:** n8n, postgres, qdrant
@@ -83,8 +82,6 @@ This project provides a comprehensive toolset for containerized application depl
     │   ├── README.md
     │   ├── qbit-hardlinker.log
     │   └── qbit-hardlinker.sh
-    ├── filebrowser
-    │   └── docker-compose.yaml
     ├── jellyfin
     │   └── docker-compose.yaml
     ├── monitoring
@@ -147,7 +144,6 @@ cp env-default .env
 docker compose --profile arrs up -d
 docker compose --profile jellyfin up -d
 docker compose --profile netalertx up -d
-docker compose --profile filebrowser up -d
 docker compose --profile nginx up -d
 docker compose --profile adguard up -d
 docker compose --profile wireguard up -d
