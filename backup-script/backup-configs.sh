@@ -7,7 +7,7 @@
 
 # Configuración
 SOURCE_DIR="/home/moperez/dockers-config"
-BACKUP_BASE="/media/moperez/Elements/backups"
+BACKUP_BASE="/mnt/routersmb/backups"
 BACKUP_NAME="dockers-config"
 KEEP_BACKUPS=3
 LOG_FILE="/var/log/backup-incremental.log"
