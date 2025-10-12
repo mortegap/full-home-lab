@@ -71,7 +71,7 @@ RSYNC_OPTS=(
     --stats                 # mostrar estadísticas
     --human-readable        # tamaños legibles
     --progress              # mostrar progreso
-    --bwlimit=10000         # limitar ancho de banda a 10MB/s
+    # --bwlimit=10000         # limitar ancho de banda a 10MB/s
 )
 
 # Reducir prioridad de I/O para no afectar a los contenedores
@@ -86,7 +86,8 @@ fi
 
 # Ejecutar rsync con baja prioridad
 BACKUP_SUCCESS=false
-if $NICE_CMD $IONICE_CMD rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
+# if $NICE_CMD $IONICE_CMD rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
+if rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
     log "✓ Backup completado exitosamente"
     BACKUP_SUCCESS=true
     
