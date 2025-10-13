@@ -1,8 +1,9 @@
 #!/bin/bash
 
 #############################################
-# Script de Backup Incremental con rsync
-# Comprime y mantiene solo los últimos 3 backups
+# Script de Backup con rsync
+# Sincroniza solo cambios al backup más reciente
+# Comprime backups antiguos y mantiene solo los últimos 3
 #############################################
 
 # Configuración
@@ -12,13 +13,20 @@ BACKUP_NAME="dockers-config"
 KEEP_BACKUPS=3
 LOG_FILE="/var/log/backup-incremental.log"
 
+# Carpetas a excluir del backup (rutas relativas desde SOURCE_DIR)
+EXCLUDE_DIRS=(
+    "jellyfin/config/metadata/"
+    "jellyfin/cache"
+    "open-webui/cache"
+)
+
 # Crear directorio base si no existe
 mkdir -p "$BACKUP_BASE"
 
 # Fecha y hora actual
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-CURRENT_BACKUP="$BACKUP_BASE/${BACKUP_NAME}_${TIMESTAMP}"
-LATEST_LINK="$BACKUP_BASE/${BACKUP_NAME}_latest"
+LATEST_BACKUP="$BACKUP_BASE/${BACKUP_NAME}_latest"
+NEW_BACKUP="$BACKUP_BASE/${BACKUP_NAME}_${TIMESTAMP}"
 
 # Función de logging
 log() {
@@ -27,7 +35,7 @@ log() {
 
 log "====== Iniciando backup ======"
 log "Origen: $SOURCE_DIR"
-log "Destino: $CURRENT_BACKUP"
+log "Destino: $LATEST_BACKUP"
 
 # Directorio de docker compose
 DOCKER_COMPOSE_DIR="/home/moperez/projects/full-home-lab"
@@ -61,7 +69,7 @@ if [ ! -d "$BACKUP_BASE" ]; then
     exit 1
 fi
 
-# Realizar backup incremental usando rsync
+# Realizar backup usando rsync (sincroniza solo cambios)
 log "Ejecutando rsync..."
 
 RSYNC_OPTS=(
@@ -71,30 +79,25 @@ RSYNC_OPTS=(
     --stats                 # mostrar estadísticas
     --human-readable        # tamaños legibles
     --progress              # mostrar progreso
+    --inplace               # escribir directamente en destino sin archivos temporales (necesario para SMB/CIFS)
+    --no-whole-file         # transferir solo diferencias (más eficiente)
     # --bwlimit=10000         # limitar ancho de banda a 10MB/s
 )
 
-# Reducir prioridad de I/O para no afectar a los contenedores
-NICE_CMD="nice -n 19"
-IONICE_CMD="ionice -c2 -n7"
+# Agregar exclusiones al array de opciones de rsync
+for exclude_dir in "${EXCLUDE_DIRS[@]}"; do
+    RSYNC_OPTS+=("--exclude=$exclude_dir")
+done
 
-# Si existe un backup previo, usar hard links para ahorro de espacio
-if [ -L "$LATEST_LINK" ] && [ -d "$LATEST_LINK" ]; then
-    log "Usando backup previo para hard links: $LATEST_LINK"
-    RSYNC_OPTS+=(--link-dest="$LATEST_LINK")
-fi
+# Crear directorio de backup si no existe
+mkdir -p "$LATEST_BACKUP"
 
-# Ejecutar rsync con baja prioridad
+# Sincronizar archivos
+log "Sincronizando archivos..."
 BACKUP_SUCCESS=false
-# if $NICE_CMD $IONICE_CMD rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
-if rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$CURRENT_BACKUP/" >> "$LOG_FILE" 2>&1; then
+if rsync "${RSYNC_OPTS[@]}" "$SOURCE_DIR/" "$LATEST_BACKUP/" >> "$LOG_FILE" 2>&1; then
     log "✓ Backup completado exitosamente"
     BACKUP_SUCCESS=true
-    
-    # Actualizar el enlace simbólico al último backup
-    rm -f "$LATEST_LINK"
-    ln -s "$CURRENT_BACKUP" "$LATEST_LINK"
-    log "✓ Enlace simbólico actualizado: $LATEST_LINK"
 else
     log "✗ ERROR: Falló el backup con rsync"
 fi
@@ -108,55 +111,54 @@ fi
 #     log "✗ ERROR al reiniciar contenedores (revisar manualmente!)"
 # fi
 
-# Si el backup falló, salir aquí antes de comprimir
+# Si el backup falló, salir aquí
 if [ "$BACKUP_SUCCESS" = false ]; then
     log "====== Backup FALLIDO ======"
     exit 1
 fi
 
-# Comprimir backups antiguos (excepto el más reciente)
-log "Comprimiendo backups antiguos..."
+# Crear snapshot del backup actual con timestamp (copia completa del latest)
+log "Creando snapshot con timestamp: $NEW_BACKUP"
+if cp -al "$LATEST_BACKUP" "$NEW_BACKUP" 2>/dev/null; then
+    log "✓ Snapshot creado con hard links (local)"
+elif rsync -a "$LATEST_BACKUP/" "$NEW_BACKUP/" >> "$LOG_FILE" 2>&1; then
+    log "✓ Snapshot creado con rsync (remoto SMB/CIFS)"
+else
+    log "⚠️  No se pudo crear snapshot, continuando..."
+fi
 
-# Listar backups sin comprimir (excluyendo el actual y enlaces simbólicos)
-UNCOMPRESSED_BACKUPS=$(find "$BACKUP_BASE" -maxdepth 1 -type d -name "${BACKUP_NAME}_*" ! -name "$(basename "$CURRENT_BACKUP")" | sort -r)
-
-for backup_dir in $UNCOMPRESSED_BACKUPS; do
-    COMPRESSED_FILE="${backup_dir}.tar.gz"
-    
-    # Comprimir solo si no existe ya el archivo comprimido
-    if [ ! -f "$COMPRESSED_FILE" ]; then
-        log "Comprimiendo: $(basename "$backup_dir")"
-        if tar -czf "$COMPRESSED_FILE" -C "$BACKUP_BASE" "$(basename "$backup_dir")" 2>> "$LOG_FILE"; then
-            log "✓ Comprimido: $(basename "$COMPRESSED_FILE")"
-            # Eliminar directorio original después de comprimir
-            rm -rf "$backup_dir"
-            log "✓ Directorio eliminado: $(basename "$backup_dir")"
-        else
-            log "✗ ERROR al comprimir: $(basename "$backup_dir")"
-        fi
+# Comprimir el snapshot recién creado inmediatamente
+if [ -d "$NEW_BACKUP" ]; then
+    COMPRESSED_FILE="${NEW_BACKUP}.tar.gz"
+    log "Comprimiendo snapshot: $(basename "$NEW_BACKUP")"
+    if tar -czf "$COMPRESSED_FILE" -C "$BACKUP_BASE" "$(basename "$NEW_BACKUP")" 2>> "$LOG_FILE"; then
+        log "✓ Comprimido: $(basename "$COMPRESSED_FILE")"
+        # Eliminar directorio después de comprimir
+        rm -rf "$NEW_BACKUP"
+        log "✓ Directorio eliminado: $(basename "$NEW_BACKUP")"
+    else
+        log "✗ ERROR al comprimir snapshot"
     fi
-done
+fi
 
-# Limpiar backups antiguos (mantener solo los últimos N)
-log "Limpiando backups antiguos (manteniendo últimos $KEEP_BACKUPS)..."
+# Limpiar backups comprimidos antiguos (mantener solo los últimos N)
+log "Limpiando backups antiguos (manteniendo últimos $KEEP_BACKUPS snapshots comprimidos)..."
 
-# Contar backups (directorios + archivos comprimidos)
-ALL_BACKUPS=$(find "$BACKUP_BASE" -maxdepth 1 \( -type d -name "${BACKUP_NAME}_*" -o -name "${BACKUP_NAME}_*.tar.gz" \) | sort -r)
-BACKUP_COUNT=$(echo "$ALL_BACKUPS" | wc -l)
+# Contar solo archivos comprimidos (excluyendo el directorio _latest)
+ALL_COMPRESSED=$(find "$BACKUP_BASE" -maxdepth 1 -name "${BACKUP_NAME}_*.tar.gz" | sort -r)
+BACKUP_COUNT=$(echo "$ALL_COMPRESSED" | grep -c "tar.gz" || echo "0")
 
-log "Total de backups encontrados: $BACKUP_COUNT"
+log "Total de backups comprimidos: $BACKUP_COUNT"
 
 if [ "$BACKUP_COUNT" -gt "$KEEP_BACKUPS" ]; then
-    BACKUPS_TO_DELETE=$(echo "$ALL_BACKUPS" | tail -n +$((KEEP_BACKUPS + 1)))
-    
-    for backup_item in $BACKUPS_TO_DELETE; do
-        log "Eliminando backup antiguo: $(basename "$backup_item")"
-        if [ -d "$backup_item" ]; then
-            rm -rf "$backup_item"
-        else
-            rm -f "$backup_item"
+    BACKUPS_TO_DELETE=$(echo "$ALL_COMPRESSED" | tail -n +$((KEEP_BACKUPS + 1)))
+
+    for backup_file in $BACKUPS_TO_DELETE; do
+        if [ -f "$backup_file" ]; then
+            log "Eliminando backup antiguo: $(basename "$backup_file")"
+            rm -f "$backup_file"
+            log "✓ Eliminado: $(basename "$backup_file")"
         fi
-        log "✓ Eliminado: $(basename "$backup_item")"
     done
 else
     log "No hay backups antiguos para eliminar"
@@ -164,8 +166,13 @@ fi
 
 # Mostrar resumen
 log "====== Resumen de backups ======"
-log "Backups actuales:"
-find "$BACKUP_BASE" -maxdepth 1 \( -type d -name "${BACKUP_NAME}_*" -o -name "${BACKUP_NAME}_*.tar.gz" \) -exec ls -lh {} \; | tee -a "$LOG_FILE"
+log "Backup actual (sin comprimir):"
+if [ -d "$LATEST_BACKUP" ]; then
+    du -sh "$LATEST_BACKUP" 2>/dev/null | tee -a "$LOG_FILE"
+fi
+log ""
+log "Snapshots comprimidos:"
+find "$BACKUP_BASE" -maxdepth 1 -name "${BACKUP_NAME}_*.tar.gz" -exec ls -lh {} \; | tee -a "$LOG_FILE"
 
 # Comprobar tamaño del log y truncar si es necesario
 LOG_SIZE=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null)
