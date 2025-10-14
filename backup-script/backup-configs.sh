@@ -10,7 +10,7 @@
 SOURCE_DIR="/home/moperez/dockers-config"
 BACKUP_BASE="/mnt/routersmb/backups"
 BACKUP_NAME="dockers-config"
-KEEP_BACKUPS=3
+KEEP_BACKUPS=7
 LOG_FILE="/var/log/backup-incremental.log"
 
 # Carpetas a excluir del backup (rutas relativas desde SOURCE_DIR)
