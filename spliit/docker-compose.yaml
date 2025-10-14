@@ -9,6 +9,9 @@ services:
     environment:
       - POSTGRES_PRISMA_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@spliit-postgres
       - POSTGRES_URL_NON_POOLING=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@spliit-postgres
+      - NEXT_PUBLIC_ENABLE_CATEGORY_EXTRACT=true
+      - LOCAL_AI_URL=http://${OLLAMA_SERVER}:11434/api/chat
+      - LOCAL_AI_MODEL=llama3.1:8b
     depends_on:
       spliit-postgres:
         condition: service_healthy
