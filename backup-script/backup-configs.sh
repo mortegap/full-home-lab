@@ -15,7 +15,7 @@ LOG_FILE="/var/log/backup-incremental.log"
 
 # Carpetas a excluir del backup (rutas relativas desde SOURCE_DIR)
 EXCLUDE_DIRS=(
-    "jellyfin/config/metadata/"
+    "jellyfin/config/metadata"
     "jellyfin/cache"
     "open-webui/cache"
 )
