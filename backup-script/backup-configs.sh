@@ -102,15 +102,6 @@ else
     log "✗ ERROR: Falló el backup con rsync"
 fi
 
-# # Reiniciar contenedores (SIEMPRE, incluso si el backup falló)
-# log "Reiniciando contenedores de Docker Compose..."
-# cd "$DOCKER_COMPOSE_DIR" || exit 1
-# if docker compose start >> "$LOG_FILE" 2>&1; then
-#     log "✓ Contenedores reiniciados correctamente"
-# else
-#     log "✗ ERROR al reiniciar contenedores (revisar manualmente!)"
-# fi
-
 # Si el backup falló, salir aquí
 if [ "$BACKUP_SUCCESS" = false ]; then
     log "====== Backup FALLIDO ======"
