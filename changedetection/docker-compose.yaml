@@ -1,11 +1,36 @@
 services:
-    changedetection:
-      profiles: [changedetection]  
-      image: ghcr.io/dgtlmoon/changedetection.io
-      container_name: changedetection
-      hostname: changedetection
-      volumes:
-        - ${GLOBAL_CONFIG_FOLDER}/changedetection-data:/datastore
-      ports:
-        - ${WEBUI_PORT_CHANGEDETECTION}:5000
-      restart: unless-stopped
+  changedetection:
+    profiles: [changedetection]  
+    image: ghcr.io/dgtlmoon/changedetection.io
+    container_name: changedetection
+    hostname: changedetection
+    volumes:
+      - ${GLOBAL_CONFIG_FOLDER}/changedetection-data:/datastore
+    ports:
+      - ${WEBUI_PORT_CHANGEDETECTION}:5000
+    environment:
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000
+    restart: unless-stopped
+    depends_on:
+      playwright-chrome:
+        condition: service_started
+
+  playwright-chrome:
+    hostname: playwright-chrome
+    profiles: [changedetection] 
+    image: browserless/chrome
+    container_name: playwright
+    restart: unless-stopped
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+      - ENABLE_DEBUGGER=false
+      - PREBOOT_CHROME=true
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      # Ignore HTTPS errors, like for self-signed certs
+      - DEFAULT_IGNORE_HTTPS_ERRORS=true          
