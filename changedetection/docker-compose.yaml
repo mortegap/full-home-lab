@@ -19,7 +19,7 @@ services:
     hostname: playwright-chrome
     profiles: [changedetection] 
     image: browserless/chrome
-    container_name: playwright
+    container_name: playwright-chrome
     restart: unless-stopped
     environment:
       - SCREEN_WIDTH=1920
