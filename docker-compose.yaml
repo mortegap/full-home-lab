@@ -11,4 +11,3 @@ include:
   - path: 'obsidian-sync/docker-compose.yaml'
   - path: 'kitchenowl/docker-compose.yaml'
   - path: 'changedetection/docker-compose.yaml'  
-  - path: 'kiwix/docker-compose.yaml'  
