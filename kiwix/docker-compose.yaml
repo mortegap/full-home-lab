@@ -3,10 +3,10 @@ services:
     container_name: kiwix
     restart: unless-stopped
     profiles: ['kiwix']
-    image: kiwix/kiwix-serve:latest
+    image: ghcr.io/kiwix/kiwix-serve:latest
     volumes:
       - /mnt/routersmb/backups/kiwixdata:/data
     ports:
-      - '${WEBUI_PORT_KIWIX}:80'
+      - "${WEBUI_PORT_KIWIX}:8080"
     command:
       - '*.zim'
