@@ -1,0 +1,12 @@
+services:
+  kiwix-serve:
+    container_name: kiwix
+    restart: unless-stopped
+    profiles: ['kiwix']
+    image: kiwix/kiwix-serve:latest
+    volumes:
+      - /mnt/routersmb/backups/kiwixdata:/data
+    ports:
+      - '${WEBUI_PORT_KIWIX}:80'
+    command:
+      - '*.zim'

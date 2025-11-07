@@ -4,3 +4,5 @@
 *.log
 .env
 *alertmanager-email-config*
+package-lock.json
+package.json
