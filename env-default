@@ -76,6 +76,7 @@ POSTGRES_USER=root
 COUCHDB_USER=admin
 COUCHDB_PASSWORD=yourpassword
 KITCHENOWL_JWT_SECRET_KEY=yoursecret
+OPENAI_API_KEY=yourapikey
 
 #
 # N8N
