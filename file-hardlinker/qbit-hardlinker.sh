@@ -11,7 +11,7 @@ srcDir="/downloads/complete"
 destDirMovies="/downloads/peliculas"
 destDirSeries="/downloads/series"
 destDirGames="/downloads/games"
-destDirGames="/downloads/music"
+destDirMusic="/downloads/music"
 
 excludedCategories="radarr,tv-sonarr,lidarr,readarr,Uncategorized"
 
@@ -29,19 +29,24 @@ fi
 label="${torrentPath#$srcDir}"
 
 srcPath="${torrentPath}/${torrentName}"
-destPathMovies="${destDirMovies}/${torrentName}"
-destPathSeries="${destDirSeries}/${torrentName}"
-destPathGames="${destDirGames}/${torrentName}"
-destPathMusic="${destDirMusic}/${torrentName}"
 
 if [[ ${torrentCategory} == *"movies"* ]]; then
-    cp -vlR "${srcPath}" "${destPathMovies}" >> "$logDir/qbit-hardlinker.log"
+    destPath="${destDirMovies}/${torrentName}"
+    cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
 elif [[ ${torrentCategory} == *"series"* ]]; then
-    cp -vlR "${srcPath}" "${destPathSeries}" >> "$logDir/qbit-hardlinker.log"
+    seriesName=$(echo "$torrentName" | sed 's/ [Ss][0-9].*//' | sed 's/\.[Ss][0-9].*//')
+    if [[ -d "${destDirSeries}/${seriesName}" ]]; then
+        destPath="${destDirSeries}/${seriesName}/${torrentName}"
+    else
+        destPath="${destDirSeries}/${torrentName}"
+    fi
+    cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
 elif [[ ${torrentCategory} == *"games"* ]]; then
-    cp -vlR "${srcPath}" "${destPathGames}" >> "$logDir/qbit-hardlinker.log"
+    destPath="${destDirGames}/${torrentName}"
+    cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
 elif [[ ${torrentCategory} == *"music"* ]]; then
-    cp -vlR "${srcPath}" "${destPathMusic}" >> "$logDir/qbit-hardlinker.log"        
+    destPath="${destDirMusic}/${torrentName}"
+    cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
 else
     echo "Torrent category invalid" >> "$logDir/qbit-hardlinker.log"
 fi
