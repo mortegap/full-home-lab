@@ -34,7 +34,7 @@ if [[ ${torrentCategory} == *"movies"* ]]; then
     destPath="${destDirMovies}/${torrentName}"
     cp -vlR "${srcPath}" "${destPath}" >> "$logDir/qbit-hardlinker.log"
 elif [[ ${torrentCategory} == *"series"* ]]; then
-    seriesName=$(echo "$torrentName" | sed 's/ [Ss][0-9].*//' | sed 's/\.[Ss][0-9].*//')
+    seriesName=$(echo "$torrentName" | sed 's/\./ /g' | sed 's/ [Ss][0-9].*//' | sed 's/^ *//' | sed 's/ *$//')
     if [[ -d "${destDirSeries}/${seriesName}" ]]; then
         destPath="${destDirSeries}/${seriesName}/${torrentName}"
     else
