@@ -17,6 +17,10 @@ services:
       - ${GLOBAL_CONFIG_FOLDER}/jellyfin/config:/config
       - ${GLOBAL_CONFIG_FOLDER}/jellyfin/cache:/cache
       - ${GLOBAL_MEDIA_FOLDER}:/media
+    deploy:
+      resources:
+        limits:
+          cpus: '12.0'
     extra_hosts:
       - "host.docker.internal:host-gateway"
     devices:
