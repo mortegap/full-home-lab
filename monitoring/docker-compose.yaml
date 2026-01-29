@@ -58,6 +58,7 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.external-url=http://localhost:9090'
+      - '--web.enable-lifecycle'
     volumes:
       - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./configs/prometheus/recording-rules.yml:/etc/prometheus/recording-rules.yml
@@ -202,6 +203,29 @@ services:
     labels:
       <<: *default-labels
     logging: *default-logging
+
+  speedtest-exporter:
+    image: miguelndecarvalho/speedtest-exporter
+    profiles: [monitoring]
+    container_name: speedtest-exporter
+    ports:
+      - ${SPEEDTEST_PORT}:9798
+    restart: always
+    networks:
+      - monitoring      
+
+  blackbox:
+    image: prom/blackbox-exporter:master
+    profiles: [monitoring]
+    restart: always
+    ports:
+        - ${BLACKBOX_PORT}:9115
+    command:
+        - --config.file=/etc/blackbox/blackbox.yml
+    volumes:
+        - ./configs/blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
+    networks:
+      - monitoring      
 
 volumes:
   grafana-data: {}
