@@ -1,0 +1,18 @@
+services:
+  freshrss:
+    image: freshrss/freshrss:latest
+    profiles: [freshrss]
+    container_name: freshrss
+    hostname: freshrss
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+    volumes:
+      - ${GLOBAL_CONFIG_FOLDER}/freshrss/data:/var/www/FreshRSS/data
+      - ${GLOBAL_CONFIG_FOLDER}/freshrss/extensions:/var/www/FreshRSS/extensions
+    ports:
+      - ${WEBUI_PORT_FRESHRSS}:80
+    environment:
+      TZ: ${TIMEZONE}
+      CRON_MIN: '3,33'

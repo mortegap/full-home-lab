@@ -37,17 +37,31 @@
 
 ## Overview
 
-Bring a whole home lab ecosystem to live with one command entrypoint.
-- **DNS:** AdGuard
-- **Torrent:** Arrs stack and qBittorrent
+Bring a whole home lab ecosystem to life with one command entrypoint.
+
+### Media & Entertainment
 - **Media Streaming:** Jellyfin
-- **Monitoring:** Grafana/Prometheus/Alertmanager
-- **Workflow/AgenticAI:** n8n, postgres, qdrant
-- **Proxy:** Nginx Proxy Manager
-- **Web Interface for LLM:** OpenWebUI
-- **VPN:** Wireguard
-- **Finance tool:** Spliit
-- **Container management tool:** Portainer
+- **Torrent & Automation:** Arrs stack (qBittorrent, Radarr, Sonarr, Prowlarr, Bazarr, Jellyseerr)
+- **RSS Reader:** FreshRSS
+
+### AI & Automation
+- **Workflow/Agentic AI:** n8n with PostgreSQL and Qdrant vector DB
+- **LLM Web Interface:** Open-WebUI (connects to Ollama)
+
+### Monitoring & Networking
+- **Monitoring Stack:** Grafana, Prometheus, Loki, Alertmanager, cAdvisor, Promtail, Speedtest, Blackbox
+- **Reverse Proxy:** Nginx Proxy Manager
+- **Network Scanner:** NetAlertX
+
+### Productivity & Finance
+- **Expense Splitting:** Spliit
+- **Recipe Management:** KitchenOwl
+- **Notes Sync:** Obsidian Sync (CouchDB)
+- **Website Monitoring:** Changedetection
+
+### Utilities
+- **Container Management:** Portainer
+- **Offline Content:** Kiwix (Wikipedia, etc.)
 
 ---
 
@@ -71,33 +85,28 @@ This project provides a comprehensive toolset for containerized application depl
 
 ```sh
 └── /
-    ├── README.back
-    ├── adguard
-    │   └── docker-compose.yaml
-    ├── arrs-qbit
-    │   └── docker-compose.yaml
-    ├── docker-compose.yaml
-    ├── env-default
-    ├── file-hardlinker
-    │   ├── README.md
-    │   ├── qbit-hardlinker.log
-    │   └── qbit-hardlinker.sh
-    ├── jellyfin
-    │   └── docker-compose.yaml
-    ├── monitoring
-    │   ├── configs
-    │   ├── dashboards
-    │   └── docker-compose.yaml
-    ├── n8n
-    │   └── docker-compose.yaml
-    ├── netalertx
-    │   └── docker-compose.yaml
-    ├── nginx-proxy-manager
-    │   └── docker-compose.yaml
-    ├── open-webui
-    │   └── docker-compose.yaml
-    └── wireguard
-        └── docker-compose.yaml
+    ├── docker-compose.yaml          # Root compose with includes
+    ├── env-default                  # Environment template (copy to .env)
+    ├── CLAUDE.md                    # AI assistant instructions
+    │
+    ├── arrs-qbit/                   # Media automation stack
+    ├── backup-script/               # Config backup utilities
+    ├── changedetection/             # Website change monitoring
+    ├── file-hardlinker/             # Post-download torrent organizer
+    ├── freshrss/                    # RSS feed reader
+    ├── jellyfin/                    # Media streaming server
+    ├── kitchenowl/                  # Recipe & meal planning
+    ├── kiwix/                       # Offline content server
+    ├── monitoring/                  # Observability stack
+    │   ├── configs/                 # Prometheus, Loki configs
+    │   └── dashboards/              # Grafana dashboards
+    ├── n8n/                         # Workflow automation
+    ├── netalertx/                   # Network device scanner
+    ├── nginx-proxy-manager/         # Reverse proxy
+    ├── obsidian-sync/               # CouchDB for Obsidian
+    ├── open-webui/                  # LLM chat interface
+    ├── portainer/                   # Container management
+    └── spliit/                      # Expense splitting
 ```
 ---
 
@@ -139,19 +148,24 @@ Run the project with:
 
 **Using [docker](https://www.docker.com/):**
 ```sh
-# Copy env-default to an .env file and run profiles
+# Copy env-default to an .env file and configure
 cp env-default .env
-docker compose --profile arrs up -d
-docker compose --profile jellyfin up -d
-docker compose --profile netalertx up -d
-docker compose --profile nginx up -d
-docker compose --profile adguard up -d
-docker compose --profile wireguard up -d
-docker compose --profile n8n up -d
-docker compose --profile openwebui up -d
-docker compose --profile monitoring up -d
-docker compose --profile spliit up -d
-docker compose --profile portainer up -d
+
+# Start services by profile
+docker compose --profile arrs up -d           # Media automation stack
+docker compose --profile jellyfin up -d       # Media streaming
+docker compose --profile freshrss up -d       # RSS reader
+docker compose --profile n8n up -d            # Workflow automation
+docker compose --profile openwebui up -d      # LLM chat interface
+docker compose --profile monitoring up -d     # Observability stack
+docker compose --profile nginx up -d          # Reverse proxy
+docker compose --profile netalertx up -d      # Network scanner
+docker compose --profile spliit up -d         # Expense splitting
+docker compose --profile kitchenowl up -d     # Recipe management
+docker compose --profile obsidian up -d       # Obsidian sync
+docker compose --profile changedetection up -d # Website monitoring
+docker compose --profile portainer up -d      # Container management
+docker compose --profile kiwix up -d          # Offline content
 ```
 ---
 
