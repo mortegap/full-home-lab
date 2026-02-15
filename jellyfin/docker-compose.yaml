@@ -24,5 +24,5 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/card0:/dev/dri/card0
+      #      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri:/dev/dri
