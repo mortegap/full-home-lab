@@ -13,4 +13,5 @@ include:
   - path: 'changedetection/docker-compose.yaml'
   - path: 'freshrss/docker-compose.yaml'
   - path: 'kiwix/docker-compose.yaml'
+  - path: 'ntfy/docker-compose.yaml'
   

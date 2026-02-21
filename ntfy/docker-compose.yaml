@@ -1,0 +1,23 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    profiles: [ntfy]
+    container_name: ntfy
+    hostname: ntfy
+    command: serve
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+    environment:
+      TZ: ${TIMEZONE}
+      NTFY_BASE_URL: https://ntfy.${DOMAIN_NAME}
+      NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
+      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
+      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_BEHIND_PROXY: true
+      NTFY_ENABLE_LOGIN: true
+    volumes:
+      - ${GLOBAL_CONFIG_FOLDER}/ntfy:/var/lib/ntfy
+    ports:
+      - ${WEBUI_PORT_NTFY}:80
